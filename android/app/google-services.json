@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "548917608773",
+    "project_id": "ayiigtaaver2",
+    "storage_bucket": "ayiigtaaver2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548917608773:android:7b621dc9ac1a00ad517e2c",
+        "android_client_info": {
+          "package_name": "com.ayiigtaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548917608773-8oi0872msgj8c2pa3dniid3nvq8pju6o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhyjGFF75M3B-LRJUhP0aeI3yn0t1VrAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548917608773-8oi0872msgj8c2pa3dniid3nvq8pju6o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
