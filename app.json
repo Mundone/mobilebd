@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "AyiigTaa",
+    "slug": "AyiigTaa",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "AyiigTaa"
+}
