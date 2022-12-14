@@ -15,8 +15,13 @@ const styles = StyleSheet.create({
       alignItems: 'flex-start',
     },
     text: {
-      fontSize: 20,
-      color: '#333333'
+      fontSize: 24,
+      color: '#000',
+      marginBottom: 20,
+      marginTop: 15,
+      textAlign: 'center',
+      fontWeight: 'bold',
+
     },
     text1: {
       fontSize: 25,
@@ -28,11 +33,19 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
     aboutUser: {
-      fontSize: 12,
+      fontSize: 15,
       fontWeight: '600',
       color: '#666',
       textAlign: 'center',
       marginBottom: 10,
+    },
+    pointUser: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: '#000',
+      marginBottom: 10,
+      textAlign: 'center',
+      top: 15
     },
     userImg: {
       height: 150,

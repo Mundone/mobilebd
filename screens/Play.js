@@ -92,6 +92,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import firestore from '@react-native-firebase/firestore';
 import React, {useEffect, useContext, useState} from 'react';
 import SoundPlayer from 'react-native-sound-player';
+import Ionicons from "react-native-vector-icons/Ionicons";
+import {AuthContext} from '../navigation/AuthProvider';
+
 
 // const Stack = createNativeStackNavigator();
 
@@ -99,9 +102,13 @@ import SoundPlayer from 'react-native-sound-player';
 const Play1 = ({route, navigation}) => {
 
     const [buttonText, setButtonText] = useState('Тоглуулах');
+    const [recordUrl, setRecordUrl] = useState('https://bsite.net/b200910045/recordplaying.png');
+    const {user, logout} = useContext(AuthContext);
+    const [userData, setUserData] = useState(null);
+
 
     // const year = useNavigationParam('year');
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(true);
     const [questionData, setQuestionData] = useState([]);
 
     const getQuestion = async() => {    
@@ -114,14 +121,26 @@ const Play1 = ({route, navigation}) => {
             querySnapshot.forEach((doc) => 
               tempDoc.push(doc.data())
             )
-            console.log("tempDoc: " + tempDoc)
+            SoundPlayer.playUrl(tempDoc[0]['question'])
+            // console.log("tempDoc: " + tempDoc)
             setQuestionData(tempDoc); 
             // return tempDoc; 
             //  console.log("Gadnah function ajillaj baina");
     
-        })   
+        })  
+        firestore()
+        .collection('users')
+        .doc(user.uid)
+        .get()
+        .then((documentSnapshot) => {
+            if( documentSnapshot.exists ) {
+            // console.log('User Data', documentSnapshot.data());
+            setUserData(documentSnapshot.data());
+            }
+        })       
+
        }
-       console.log("Data: " + questionData);
+    //    console.log("Data: " + questionData);
        const allQuestions = questionData;
     //    allQuestions.length = 0;
 
@@ -130,7 +149,7 @@ const Play1 = ({route, navigation}) => {
     useEffect(() => {
 
         getQuestion();    
-
+        
     }, []);
     // if(allQuestions!=null){
 
@@ -155,14 +174,16 @@ const Play1 = ({route, navigation}) => {
             // or play from url
             // SoundPlayer.playUrl('https://cvws.icloud-content.com/B/AWvaEmmnAl5gD9VUYyu_lnRzdmYnAfzYxT7fqWT5O6hqAwqhz-FoTOtQ/gangbay.mp3?o=AuGZscWoT662yDwLIiMN8gMxQdeyYGH28QBxDM6GEaSO&v=1&x=3&a=CAog2yo3TrRkzv8njSykZ78gZyPnZtUnVXD5rccPBuvKHUYSbxDC2Y6x0DAYwrbqstAwIgEAUgRzdmYnWgRoTOtQaidgLY8oADjQMdwa5IhNvpWotjoj_L7smZlfzJGzoWZGiwFWcXIn4A9yJ4FeHshXPHbzYpMDJ1h0r9mIJ3GXWf-mz9XyFfoE4anExrgkag_1iA&e=1670848879&fl=&r=0c785960-444b-4390-9933-7aaf14a393d6-1&k=ry9DQuCKJqhKT7OGQJKM3Q&ckc=com.apple.clouddocs&ckz=com.apple.CloudDocs&p=45&s=-703QesuJGhlyeUtjV6akNY7CcE&cd=i')
                 // SoundPlayer.playUrl('https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3')
-                console.log("q: " + questionData.question);
+                // console.log("q: " + questionData.question);
                 SoundPlayer.playUrl(allQuestions[currentQuestionIndex]['question'])
                 setButtonText('Зогсоох');
+                setRecordUrl('https://bsite.net/b200910045/recordplaying.png');
             }
             else{
                 SoundPlayer.stop();
                 setIsPlaying(false);
                 setButtonText('Тоглуулах');
+                setRecordUrl('https://bsite.net/b200910045/record.png');
             }
             
         } catch (e) {
@@ -187,16 +208,38 @@ const Play1 = ({route, navigation}) => {
             // Last Question
             // Show Score Modal
             setShowScoreModal(true)
+            SoundPlayer.stop();
+
+            
+            firestore()
+            .collection('users')
+            .doc(user.uid)
+            .update({
+                songPoints: Number(score) + Number(userData.songPoints),
+                songDefaultPoint: Number(allQuestions.length-1) + Number(userData.songDefaultPoint),
+            })
+            .then(() => {
+            console.log('User Score Updated!');
+            })
+            
+
+            
+
+
         }else{
             setCurrentQuestionIndex(currentQuestionIndex+1);
             setCurrentOptionSelected(null);
             setCorrectOption(null);
             setIsOptionsDisabled(false);
             setShowNextButton(false);
+            SoundPlayer.stop();
+            SoundPlayer.playUrl(allQuestions[currentQuestionIndex+1]['question']);
+            setRecordUrl('https://bsite.net/b200910045/recordplaying.png');
         }
-        SoundPlayer.stop();
-                setIsPlaying(false);
-                setButtonText('Тоглуулах');
+        
+        setIsPlaying(false);
+        setButtonText('Тоглуулах');
+            
 
         Animated.timing(progress, {
             toValue: currentQuestionIndex+1,
@@ -243,14 +286,38 @@ const Play1 = ({route, navigation}) => {
                     fontSize: 30
                 }}>{allQuestions[currentQuestionIndex]?.question}</Text> */}
 
-                <Button
+                {/* <Button
                     onPress={playSong}
                     title={buttonText}
                     color="#841584"
                     style={{padding: 40}}
                     // accessibilityLabel="Play Song"
-                />
-
+                /> */}
+                <View style={{
+                    flexDirection: "row",
+                    justifyContent: 'center', 
+                }}> 
+                    <TouchableOpacity style={{
+                        // backgroundColor: "#D9D9D9",
+                        alignItems: "center",
+                        height: 120,
+                        width: 250,
+                        margin: 5,
+                        borderRadius: 10,
+                        justifyContent: 'center',  
+                    }} onPress={playSong}>
+                        {/* <Text style={{
+                            fontSize: 25,
+                            color: "#2D2B79",
+                            fontWeight: "500",
+                        }}>{buttonText}</Text> */}
+                        <Image
+                        style={{justifyContent: 'flex-start', alignItems: 'flex-start', height: 200, width: '100%',}}
+                        source = {{uri: recordUrl}}
+                        />
+                    </TouchableOpacity>
+                </View>
+                
             </View>
         )
     }
@@ -325,7 +392,7 @@ const Play1 = ({route, navigation}) => {
                 style={{
                     marginTop: 20, width: '100%', backgroundColor: COLORS.accent, padding:15, borderRadius: 5
                 }}>
-                    <Text style={{fontSize: 20, color: COLORS.white, textAlign: 'center'}}>Next</Text>
+                    <Text style={{fontSize: 20, color: COLORS.white, textAlign: 'center'}}>Дараагын</Text>
                 </TouchableOpacity>
             )
         }else{
@@ -407,7 +474,7 @@ const Play1 = ({route, navigation}) => {
                            padding: 20,
                            alignItems: 'center'
                        }}>
-                           <Text style={{fontSize: 30, fontWeight: 'bold'}}>{ score> (allQuestions.length/2) ? 'Congratulations!' : 'Oops!' }</Text>
+                           <Text style={{fontSize: 30, fontWeight: 'bold'}}>{ score> (allQuestions.length/2) ? 'Баяр хүргэе!' : 'Өө!' }</Text>
 
                            <View style={{
                                flexDirection: 'row',
@@ -427,14 +494,24 @@ const Play1 = ({route, navigation}) => {
                            <TouchableOpacity
                            onPress={restartQuiz}
                            style={{
-                               backgroundColor: COLORS.accent,
+                               backgroundColor: '#2c2c7c',
                                padding: 20, width: '100%', borderRadius: 20
                            }}>
                                <Text style={{
                                    textAlign: 'center', color: COLORS.white, fontSize: 20
-                               }}>Retry Quiz</Text>
+                               }}>Дахин эхлүүлэх</Text>
                            </TouchableOpacity>
-
+                            <View style={{height: 25}}></View>
+                           <TouchableOpacity
+                           onPress={() => navigation.goBack()}
+                           style={{
+                               backgroundColor: '#2c2c7c',
+                               padding: 20, width: '100%', borderRadius: 20
+                           }}>
+                               <Text style={{
+                                   textAlign: 'center', color: COLORS.white, fontSize: 20
+                               }}>Буцах</Text>
+                           </TouchableOpacity>
                        </View>
 
                    </View>

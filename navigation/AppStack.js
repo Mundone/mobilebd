@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 const AppStack = () => {
   return (
     <Stack.Navigator >
-      <Stack.Screen name='Home' component={HomeScreen} options={{ headerShown: false,}}/>
+      <Stack.Screen name='HomeScreen' component={HomeScreen} options={{ headerShown: false,}}/>
       <Stack.Screen name='EditProfileScreen' component={EditProfileScreen} options={{
           headerTitle: 'Бүртгэл засварлах хэсэг',
           headerBackTitleVisible: false,

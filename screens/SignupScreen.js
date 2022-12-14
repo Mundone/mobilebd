@@ -51,6 +51,7 @@ const SignupScreen = ({navigation}) => {
     <FormInput
         onChangeText={(about) => setAbout(about)}
         placeholderText="Танилцуулга"
+        iconType="user"
         autoCorrect={false}
       />
 

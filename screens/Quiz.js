@@ -1,10 +1,12 @@
 // import React, { useState } from 'react'
-import { View, Text, SafeAreaView, StatusBar, Image, TouchableOpacity, Modal, Animated, StyleSheet } from 'react-native'
+import { View, Text, SafeAreaView, StatusBar, Image, TouchableOpacity, Modal, Animated, StyleSheet, ScrollView} from 'react-native'
 import { COLORS, SIZES } from '../constants';
 import data from '../data/QuizData';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import firestore from '@react-native-firebase/firestore';
 import React, {useEffect, useContext, useState} from 'react';
+import {AuthContext} from '../navigation/AuthProvider';
+
 
 // const Stack = createNativeStackNavigator();
 
@@ -12,27 +14,40 @@ import React, {useEffect, useContext, useState} from 'react';
 const Quiz = ({route, navigation}) => {
 
     // const year = useNavigationParam('year');
-
+    const {user, logout} = useContext(AuthContext);
+    const [userData, setUserData] = useState(null);
     const [questionData, setQuestionData] = useState([]);
 
     const getQuestion = async() => {    
         // const {ParamName}= route.params;
 
-                     console.log("Function ajillaj baina: " + route.params.year);
+                    //  console.log("Function ajillaj baina: " + route.params.year);
         await firestore().collection('questions').doc('text').collection(route.params.year).get()
         .then((querySnapshot) => {
             const tempDoc = []
             querySnapshot.forEach((doc) => 
               tempDoc.push(doc.data())
             )
-            console.log("tempDoc: " + tempDoc)
+            // console.log("tempDoc: " + tempDoc)
             setQuestionData(tempDoc); 
             // return tempDoc; 
             //  console.log("Gadnah function ajillaj baina");
     
         })   
+
+        firestore()
+        .collection('users')
+        .doc(user.uid)
+        .get()
+        .then((documentSnapshot) => {
+            if( documentSnapshot.exists ) {
+            // console.log('User Data', documentSnapshot.data());
+            setUserData(documentSnapshot.data());
+            }
+        })  
+
        }
-       console.log("Data: " + questionData);
+    //    console.log("Data: " + questionData);
        const allQuestions = questionData;
     //    allQuestions.length = 0;
     useEffect(() => {
@@ -70,6 +85,18 @@ const Quiz = ({route, navigation}) => {
             // Last Question
             // Show Score Modal
             setShowScoreModal(true)
+
+            firestore()
+            .collection('users')
+            .doc(user.uid)
+            .update({
+                textPoints: Number(score) + Number(userData.textPoints),
+                textDefaultPoint: (allQuestions.length-1) + Number(userData.textDefaultPoint),
+            })
+            .then(() => {
+            console.log('User Score Updated!');
+            })
+
         }else{
             setCurrentQuestionIndex(currentQuestionIndex+1);
             setCurrentOptionSelected(null);
@@ -237,6 +264,8 @@ const Quiz = ({route, navigation}) => {
        <SafeAreaView style={{
            flex: 1
        }}>
+        
+
            <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
            <View style={{
                flex: 1,
@@ -244,7 +273,7 @@ const Quiz = ({route, navigation}) => {
                paddingHorizontal: 16,
                backgroundColor: COLORS.background,
                position:'relative'
-           }}>
+           }}><ScrollView>
 
                {/* ProgressBar */}
                { renderProgressBar() }
@@ -277,7 +306,7 @@ const Quiz = ({route, navigation}) => {
                            padding: 20,
                            alignItems: 'center'
                        }}>
-                           <Text style={{fontSize: 30, fontWeight: 'bold'}}>{ score> (allQuestions.length/2) ? 'Congratulations!' : 'Oops!' }</Text>
+                           <Text style={{fontSize: 30, fontWeight: 'bold'}}>{ score> (allQuestions.length/2) ? 'Баяр хүргэе!' : 'Өө!' }</Text>
 
                            <View style={{
                                flexDirection: 'row',
@@ -297,12 +326,24 @@ const Quiz = ({route, navigation}) => {
                            <TouchableOpacity
                            onPress={restartQuiz}
                            style={{
-                               backgroundColor: COLORS.accent,
+                               backgroundColor: '#2c2c7c',
                                padding: 20, width: '100%', borderRadius: 20
                            }}>
                                <Text style={{
                                    textAlign: 'center', color: COLORS.white, fontSize: 20
-                               }}>Retry Quiz</Text>
+                               }}>Дахин эхлүүлэх</Text>
+                           </TouchableOpacity>
+
+                           <View style={{height: 25}}></View>
+                           <TouchableOpacity
+                           onPress={() => navigation.goBack()}
+                           style={{
+                               backgroundColor: '#2c2c7c',
+                               padding: 20, width: '100%', borderRadius: 20
+                           }}>
+                               <Text style={{
+                                   textAlign: 'center', color: COLORS.white, fontSize: 20
+                               }}>Буцах</Text>
                            </TouchableOpacity>
 
                        </View>
@@ -325,8 +366,10 @@ const Quiz = ({route, navigation}) => {
                 }}
                 resizeMode={'contain'}
                 /> */}
-
+ </ScrollView>
            </View>
+       
+
        </SafeAreaView>
     )
 

@@ -22,12 +22,12 @@ const HomeScreenWithNavigator = (navigation) => {
   
   return (
     <Tab.Navigator 
-    initialRouteName={'Home'}
+    initialRouteName={'HomeSubScreen'}
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === 'Home') {
+        if (route.name === 'HomeSubScreen') {
           // iconName = focused ? 'home' : 'home-outline';
           iconName = 'home';
         } else if (route.name === 'QuizScreen') {
@@ -48,17 +48,10 @@ const HomeScreenWithNavigator = (navigation) => {
       tabBarShowLabel: false,
     })}
     >
-         <Tab.Screen name="Home"
+         <Tab.Screen name="HomeSubScreen"
           component={HomeSubScreen}
           options={{
-            headerTitle: 'Үндсэн хэсэг',
-            headerBackTitleVisible: false,
-            headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: '#fff', 
-              shadowColor: '#fff', 
-              elevation: 0,
-            },
+            headerShown: false,
           }}
         />
          <Tab.Screen name="QuizScreen"

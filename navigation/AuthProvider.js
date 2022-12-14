@@ -170,7 +170,6 @@ export const AuthProvider = ({children}) => {
               .set({
                   fname: fname1,
                   lname: lname1,
-                  about: '',
                   phone: '',
                   country: '',
                   city: '',
@@ -178,6 +177,10 @@ export const AuthProvider = ({children}) => {
                   createdAt: firestore.Timestamp.fromDate(new Date()),
                   about: about1,
                   userImg: '',
+                  textPoints: '0',
+                  songPoints: '0',
+                  textDefualtPoint: '0',
+                  songDefaultPoint: '0',
               })
               //ensure we catch any errors at this stage to advise us if something does go wrong
               .catch(error => {

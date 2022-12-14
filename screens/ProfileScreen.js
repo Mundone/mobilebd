@@ -23,7 +23,7 @@ const ProfileScreen = ({navigation}) => {
     .get()
     .then((documentSnapshot) => {
       if( documentSnapshot.exists ) {
-        console.log('User Data', documentSnapshot.data());
+        // console.log('User Data', documentSnapshot.data());
         setUserData(documentSnapshot.data());
       }
     })
@@ -49,6 +49,8 @@ const ProfileScreen = ({navigation}) => {
             <Text style={styles.aboutUser}>
             {userData ? userData.about || 'No details added.' : ''}
             </Text>
+
+            
             
             <FormButton buttonTitle='Бүртгэл засварлах' onPress={() => navigation.navigate('EditProfileScreen')} />
             {/* <Text style={styles.text}>Бүртгэл хэсэг {user.uid}</Text> */}

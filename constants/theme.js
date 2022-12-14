@@ -11,7 +11,9 @@ export const COLORS = {
 
     black: "#171717",
     white: "#FFFFFF",
-    background: "#252C4A"
+    // background: "#252C4A"
+    background: "#2c2c7c"
+
 }
 
 

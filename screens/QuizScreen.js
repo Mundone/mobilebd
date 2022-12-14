@@ -37,70 +37,40 @@ const QuizScreen = ({ navigation, route }) => {
           fontWeight: "500",
           fontSize: 25,
           textAlign: "center",
-          top: -10,
+          padding: 15
         }}
         onPress={() => navigation.navigate('Quiz')}
       >
-        Асуултын төрлүүд - Үг
+        Асуултын төрлүүд
       </Text>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}>
         <View style={styles.subContainer}>
-          <TouchableOpacity style={styles.componentContainer} onPress={() => navigation.navigate('Quiz', {year: '2020'})}>
-            <Text style={styles.containerText}>2020</Text>
-            <Ionicons style={styles.icon} name="heart" />
+        <TouchableOpacity style={styles.componentContainer} onPress={() => navigation.navigate('Quiz', {year: '2020'})}>
+            {/* <ImageBackground
+              source={require("../assets/lana1.jpg")}
+              style={styles.imgback}
+            > */}
+              <View style={{backgroundColor:'#000000'}}></View>
+              <Text style={styles.containerText}>1-р асуултын сан</Text>
+            {/* </ImageBackground> */}
           </TouchableOpacity>
           <TouchableOpacity style={styles.componentContainer} onPress={() => navigation.navigate('Quiz', {year: '2021'})}>
-            <Text style={styles.containerText}>2021</Text>
-            <Ionicons style={styles.icon} name="heart" />
+          {/* <ImageBackground
+              source={require("../assets/bold.jpg")}
+              style={styles.imgback}
+            > */}
+              <Text style={styles.containerText}>2-р асуултын сан</Text>
+            {/* </ImageBackground> */}
           </TouchableOpacity>
           <TouchableOpacity style={styles.componentContainer}>
-            <Text style={styles.containerText}>Prdess Here</Text>
-            <Ionicons style={styles.icon} name="heart" />
+              <Text style={styles.containerText}>3-р асуултын сан</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.componentContainer}>
+              <Text style={styles.containerText}>4-р асуултын сан</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.subContainer}>
-          <TouchableOpacity style={styles.componentContainer}>
-            <Text style={styles.containerText}>Press Here</Text>
-            <Ionicons style={styles.icon} name="heart" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.componentContainer}>
-            <Text style={styles.containerText}>Prdess Here</Text>
-            <Ionicons style={styles.icon} name="heart" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.componentContainer}>
-            <Text style={styles.containerText}>Prdess Here</Text>
-            <Ionicons style={styles.icon} name="heart" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.subContainer}>
-          <TouchableOpacity style={styles.componentContainer}>
-            <Text style={styles.containerText}>Press Here</Text>
-            <Ionicons style={styles.icon} name="heart" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.componentContainer}>
-            <Text style={styles.containerText}>Prdess Here</Text>
-            <Ionicons style={styles.icon} name="heart" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.componentContainer}>
-            <Text style={styles.containerText}>Prdess Here</Text>
-            <Ionicons style={styles.icon} name="heart" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.subContainer}>
-          <TouchableOpacity style={styles.componentContainer}>
-            <Text style={styles.containerText}>Press Here</Text>
-            <Ionicons style={styles.icon} name="heart" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.componentContainer}>
-            <Text style={styles.containerText}>Prdess Here</Text>
-            <Ionicons style={styles.icon} name="heart" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.componentContainer}>
-            <Text style={styles.containerText}>Prdess Here</Text>
-            <Ionicons style={styles.icon} name="heart" />
-          </TouchableOpacity>
-        </View>
-        </ScrollView>
+        
+      </ScrollView>
       </SafeAreaView>
     );
   };
@@ -120,24 +90,36 @@ const QuizScreen = ({ navigation, route }) => {
       flex: 1,
     },
     subContainer: {
-      flexDirection: "row",
+      flexDirection: "column",
+    },
+    imgback:{
+      resizeMode:'cover',
+      flex: 1,  
+      width: "100%", 
+      borderRadius:10
     },
     componentContainer: {
-      backgroundColor: "#D9D9D9",
+      backgroundColor: "#2c2c7c",
       alignItems: "center",
       height: 100,
-      width: 100,
+      width: 350,
       margin: 5,
       borderRadius: 10,
     },
     containerText: {
-      fontSize: 25,
-      color: "#2D2B79",
-      fontWeight: "500",
+      color:'#fff', 
+      fontSize:35, 
+      textAlign:'right', 
+      marginTop:50,
+      marginRight:10,
+      textShadowOffset: {width: 2, height: 2},
+      textShadowRadius: 20,
+      textShadowColor: 'black',
+      bottom: 30,
+      // fontWeight: 'bold'
     },
     icon: {
       padding: 10,
       color: "#2D2B79",
     },
   });
-  
